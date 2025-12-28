@@ -1,0 +1,1558 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sesión 1: Tkinter - Guía Completa</title>
+    <style>
+        :root {
+            --color-primary: #38bdf8;
+            --color-secondary: #0ea5e9;
+            --color-success: #10b981;
+            --color-warning: #f59e0b;
+            --color-error: #ef4444;
+            --color-bg: #ffffff;
+            --color-text: #1f2937;
+            --color-text-light: #6b7280;
+            --color-border: #e5e7eb;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', 'Arial', sans-serif;
+            background-color: #f9fafb;
+            overflow-x: hidden;
+        }
+
+        .slide {
+            width: 960px;
+            height: 540px;
+            margin: 20px auto;
+            display: flex;
+            flex-direction: column;
+            position: relative;
+            overflow: hidden;
+            background: white;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+        }
+
+        /* Utilidades de layout */
+        .row { display: flex; flex-direction: row; }
+        .col { display: flex; flex-direction: column; }
+        .center { justify-content: center; align-items: center; text-align: center; }
+        .space-between { justify-content: space-between; }
+        .items-center { align-items: center; }
+        .items-start { align-items: flex-start; }
+        .fill { flex: 1; }
+        .gap-1 { gap: 0.5rem; }
+        .gap-2 { gap: 1rem; }
+        .gap-3 { gap: 1.5rem; }
+        .gap-4 { gap: 2rem; }
+
+        /* Padding */
+        .p-8 { padding: 2rem; }
+        .p-10 { padding: 2.5rem; }
+        .p-12 { padding: 3rem; }
+
+        /* Margin */
+        .mb-2 { margin-bottom: 0.5rem; }
+        .mb-3 { margin-bottom: 0.75rem; }
+        .mb-4 { margin-bottom: 1rem; }
+        .mb-6 { margin-bottom: 1.5rem; }
+        .mt-4 { margin-top: 1rem; }
+        .mt-6 { margin-top: 1.5rem; }
+
+        /* Tipografía */
+        h1 { font-size: 3rem; font-weight: 700; line-height: 1.1; }
+        h2 { font-size: 2rem; font-weight: 700; line-height: 1.2; color: var(--color-primary); }
+        h3 { font-size: 1.25rem; font-weight: 700; color: var(--color-primary); }
+        h4 { font-size: 1rem; font-weight: 600; }
+        p { font-size: 0.95rem; line-height: 1.6; color: var(--color-text); }
+        
+        .text-sm { font-size: 0.85rem; }
+        .text-lg { font-size: 1.1rem; }
+        .text-xl { font-size: 1.25rem; }
+        .font-bold { font-weight: 700; }
+        .font-semibold { font-weight: 600; }
+
+        /* Código */
+        code {
+            background: #f3f4f6;
+            color: #d97706;
+            padding: 0.2rem 0.5rem;
+            border-radius: 3px;
+            font-family: 'Courier New', monospace;
+            font-size: 0.9rem;
+        }
+
+        .code-block {
+            background: #1f2937;
+            color: #f3f4f6;
+            padding: 1.5rem;
+            border-radius: 8px;
+            overflow-x: auto;
+            font-family: 'Courier New', monospace;
+            font-size: 0.75rem;
+            line-height: 1.6;
+            border-left: 4px solid var(--color-primary);
+            max-height: 200px;
+        }
+
+        .keyword { color: #93c5fd; }
+        .string { color: #86efac; }
+        .function { color: #fbbf24; }
+        .comment { color: #9ca3af; }
+        .number { color: #f87171; }
+
+        /* Listas */
+        ul, ol {
+            margin-left: 1.5rem;
+            color: var(--color-text);
+            line-height: 1.8;
+        }
+        li { margin-bottom: 0.5rem; }
+
+        /* Cajas */
+        .box {
+            border-radius: 8px;
+            padding: 1.5rem;
+            border: 1px solid var(--color-border);
+        }
+
+        .box-info {
+            background: #eff6ff;
+            border-left: 4px solid var(--color-primary);
+        }
+
+        .box-success {
+            background: #f0fdf4;
+            border-left: 4px solid var(--color-success);
+        }
+
+        .box-warning {
+            background: #fffbeb;
+            border-left: 4px solid var(--color-warning);
+        }
+
+        .box-error {
+            background: #fef2f2;
+            border-left: 4px solid var(--color-error);
+        }
+
+        .grid-2 {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1.5rem;
+        }
+
+        .grid-3 {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+            gap: 1rem;
+        }
+
+        /* Badges */
+        .badge {
+            display: inline-block;
+            background: var(--color-primary);
+            color: white;
+            padding: 0.35rem 0.75rem;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            font-weight: 600;
+        }
+
+        .badge-success {
+            background: var(--color-success);
+        }
+
+        .badge-warning {
+            background: var(--color-warning);
+        }
+
+        /* Slide backgrounds */
+        .bg-primary {
+            background: linear-gradient(135deg, #38bdf8 0%, #0ea5e9 100%);
+            color: white;
+        }
+
+        .bg-white {
+            background: white;
+            color: var(--color-text);
+        }
+
+        /* Header slide */
+        .slide-header {
+            background: linear-gradient(135deg, #38bdf8 0%, #0ea5e9 100%);
+            color: white;
+            padding: 4rem 2rem;
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .slide-header h1 {
+            color: white;
+            margin-bottom: 1rem;
+            font-size: 3.5rem;
+        }
+
+        .slide-header p {
+            color: rgba(255,255,255,0.95);
+            font-size: 1.1rem;
+            margin-bottom: 0.5rem;
+        }
+
+        /* Content slide */
+        .slide-content {
+            padding: 2.5rem;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .slide-content h2 {
+            margin-bottom: 1.5rem;
+            font-size: 1.75rem;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- SLIDE 1: Portada -->
+    <section class="slide slide-header">
+        <h1>🚀 Sesión 1</h1>
+        <p style="font-size: 1.75rem; font-weight: 600; margin-bottom: 1rem;">Interfaz Gráfica con Tkinter</p>
+        <p>Introducción a Tkinter • Widgets Básicos • Eventos y Callbacks</p>
+        <p style="margin-top: 1.5rem; opacity: 0.9; font-size: 0.95rem;">Duración: 2 horas | Nivel: Iniciación</p>
+    </section>
+
+    <!-- SLIDE 2: Objetivos -->
+    <section class="slide bg-white slide-content">
+        <h2>Objetivos de la Sesión</h2>
+        <div class="grid-3">
+            <div class="box box-info">
+                <h4>01 • Entender GUI</h4>
+                <p class="text-sm" style="margin-top: 0.75rem;">Comprender qué es una interfaz gráfica y por qué mejorar la UX</p>
+            </div>
+            <div class="box box-info">
+                <h4>02 • Conocer Tkinter</h4>
+                <p class="text-sm" style="margin-top: 0.75rem;">Familiarizarse con la librería estándar para GUIs en Python</p>
+            </div>
+            <div class="box box-info">
+                <h4>03 • Crear Ventanas</h4>
+                <p class="text-sm" style="margin-top: 0.75rem;">Aprender la estructura básica de una aplicación Tkinter</p>
+            </div>
+            <div class="box box-info">
+                <h4>04 • Utilizar Widgets</h4>
+                <p class="text-sm" style="margin-top: 0.75rem;">Dominar Label, Button y Entry para construir interfaces</p>
+            </div>
+            <div class="box box-info">
+                <h4>05 • Manejar Eventos</h4>
+                <p class="text-sm" style="margin-top: 0.75rem;">Implementar callbacks para responder a la interacción del usuario</p>
+            </div>
+            <div class="box box-info">
+                <h4>06 • Construir Calculadora</h4>
+                <p class="text-sm" style="margin-top: 0.75rem;">Aplicar todos los conocimientos en un proyecto práctico</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- SLIDE 3: ¿Qué es una GUI? -->
+    <section class="slide bg-white slide-content">
+        <h2>¿Qué es una Interfaz Gráfica (GUI)?</h2>
+        
+        <div class="grid-2">
+            <div>
+                <h4 style="color: #0ea5e9; margin-bottom: 0.6rem;">📱 GUI = Graphical User Interface</h4>
+                <ul style="color: #374151; font-size: 0.9rem;">
+                    <li><strong>Ventanas</strong> donde se muestra contenido</li>
+                    <li><strong>Botones</strong> que el usuario puede presionar</li>
+                    <li><strong>Campos de texto</strong> para escribir</li>
+                    <li><strong>Etiquetas</strong> que muestran información</li>
+                    <li><strong>Interactividad</strong> en tiempo real</li>
+                </ul>
+            </div>
+            <div class="card-dark">
+                <p style="color: #e0f2fe; margin-bottom: 0.8rem;"><strong>Ejemplos de GUIs:</strong></p>
+                <ul style="color: #bae6fd; font-size: 0.9rem;">
+                    <li>✓ Navegadores (Chrome, Firefox)</li>
+                    <li>✓ Editores (VS Code, Word)</li>
+                    <li>✓ Videojuegos</li>
+                    <li>✓ Apps de móvil</li>
+                    <li>✓ WhatsApp Desktop</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="important-box" style="margin-top: 1rem;">
+            <strong>🎯 Diferencia clave:</strong> Una GUI permite que el usuario <strong>interactúe visualmente</strong>, sin escribir comandos en terminal
+        </div>
+    </section>
+
+    <!-- SLIDE 4: Alternativas de GUIs en Python -->
+    <section class="slide bg-white slide-content">
+        <h2>Alternativas de GUIs en Python</h2>
+        
+        <div class="grid-3">
+            <div class="box box-success">
+                <h4 style="color: var(--color-success);">✅ Tkinter</h4>
+                <ul style="font-size: 0.9rem; margin-top: 0.75rem; margin-left: 1.25rem;">
+                    <li>Incluida en Python por defecto</li>
+                    <li>Sencilla de aprender</li>
+                    <li>Perfecta para iniciación</li>
+                    <li>Excelente documentación</li>
+                </ul>
+                <p style="margin-top: 1rem; font-size: 0.85rem; color: var(--color-success); font-weight: 600;">👈 La usaremos en este curso</p>
+            </div>
+            <div class="box box-warning">
+                <h4 style="color: var(--color-warning);">⚠️ PyQt/PySide</h4>
+                <ul style="font-size: 0.9rem; margin-top: 0.75rem; margin-left: 1.25rem;">
+                    <li>Muy potente y completa</li>
+                    <li>Ideal para aplicaciones profesionales</li>
+                    <li>Requiere instalación</li>
+                    <li>Curva de aprendizaje pronunciada</li>
+                </ul>
+            </div>
+            <div class="box box-info">
+                <h4 style="color: var(--color-primary);">🎮 Kivy</h4>
+                <ul style="font-size: 0.9rem; margin-top: 0.75rem; margin-left: 1.25rem;">
+                    <li>Ideal para aplicaciones móviles</li>
+                    <li>Interfaz moderna y táctil</li>
+                    <li>Multiplataforma avanzada</li>
+                    <li>Más complejo para principiantes</li>
+                </ul>
+            </div>
+        </div>
+    </section>
+
+    <!-- SLIDE 5: Estructura Básica -->
+    <section class="slide bg-white slide-content">
+        <h2>Estructura Básica de una Ventana Tkinter</h2>
+        
+        <p style="margin-bottom: 1rem;"><strong>Toda aplicación Tkinter sigue tres pasos fundamentales:</strong></p>
+
+        <div class="code-block" style="margin-bottom: 1.5rem;">
+<span class="keyword">import</span> tkinter <span class="keyword">as</span> tk
+
+<span class="comment"># 1. Crear la ventana principal</span>
+root = tk.Tk()
+
+<span class="comment"># 2. Configurar la ventana</span>
+root.title(<span class="string">"Mi Primera Ventana"</span>)
+root.geometry(<span class="string">"400x300"</span>)  <span class="comment"># ancho x alto en píxeles</span>
+
+<span class="comment"># 3. Iniciar el bucle de eventos</span>
+root.mainloop()
+        </div>
+
+        <div class="grid-2">
+            <div class="box box-info">
+                <h4>Elemento clave: mainloop()</h4>
+                <p style="margin-top: 0.75rem; font-size: 0.9rem;">Mantiene la ventana abierta esperando eventos del usuario (clics, teclas, etc.). <strong>Sin él, la ventana se cerraría al instante.</strong></p>
+            </div>
+            <div class="box box-success">
+                <h4>Resultado</h4>
+                <p style="margin-top: 0.75rem; font-size: 0.9rem;">Una ventana funcional de 400×300 píxeles con título "Mi Primera Ventana"</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- SLIDE 6: Widgets Esenciales -->
+    <section class="slide bg-white slide-content">
+        <h2>Widgets Esenciales de Tkinter</h2>
+        
+        <div class="grid-3">
+            <div class="box box-info">
+                <h4>1 • Label</h4>
+                <p style="margin-top: 0.75rem; font-size: 0.9rem;"><strong>Etiqueta de texto.</strong> Muestra texto estático o imágenes que el usuario no puede editar. Ideal para títulos, instrucciones y mostrar resultados.</p>
+                <p style="margin-top: 0.75rem; font-size: 0.85rem; color: var(--color-text-light);">Propiedades: text, font, fg, bg, width, height</p>
+            </div>
+            <div class="box box-info">
+                <h4>2 • Button</h4>
+                <p style="margin-top: 0.75rem; font-size: 0.9rem;"><strong>Botón clickeable.</strong> Ejecuta acciones cuando el usuario hace clic. El parámetro <code>command=</code> vincula una función al evento.</p>
+                <p style="margin-top: 0.75rem; font-size: 0.85rem; color: var(--color-text-light);">Propiedades: text, font, fg, bg, command, state</p>
+            </div>
+            <div class="box box-info">
+                <h4>3 • Entry</h4>
+                <p style="margin-top: 0.75rem; font-size: 0.9rem;"><strong>Campo de texto.</strong> Permite al usuario escribir una línea de texto. Métodos importantes: <code>.get()</code> y <code>.insert()</code></p>
+                <p style="margin-top: 0.75rem; font-size: 0.85rem; color: var(--color-text-light);">Propiedades: width, font, fg, bg, show</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- SLIDE 7: Widget Label en Detalle -->
+    <section class="slide bg-white slide-content">
+        <h2>Widget Label: Ejemplo de Código</h2>
+        
+        <div class="code-block" style="margin-bottom: 1.5rem; font-size: 0.7rem;">
+<span class="comment"># Label simple</span>
+label1 = tk.Label(root, text=<span class="string">"Nombre:"</span>)
+
+<span class="comment"># Label con propiedades de estilo</span>
+label2 = tk.Label(root,
+    text=<span class="string">"¡Bienvenido!"</span>,
+    font=(<span class="string">"Arial"</span>, 16, <span class="string">"bold"</span>),
+    fg=<span class="string">"white"</span>,                 <span class="comment"># color del texto</span>
+    bg=<span class="string">"#38bdf8"</span>,              <span class="comment"># color de fondo</span>
+    width=20                        <span class="comment"># ancho en caracteres</span>
+)
+
+label1.pack(pady=5)
+label2.pack(pady=5)
+        </div>
+
+        <div class="box box-info">
+            <strong>Parámetros principales:</strong>
+            <ul style="margin-top: 0.75rem; margin-left: 1.5rem;">
+                <li><code>text</code> – El texto a mostrar</li>
+                <li><code>font</code> – Tupla (nombre, tamaño, estilo): ("Arial", 14, "bold")</li>
+                <li><code>fg</code> – Color del texto (foreground)</li>
+                <li><code>bg</code> – Color de fondo (background)</li>
+                <li><code>width / height</code> – Dimensiones en caracteres/líneas</li>
+            </ul>
+        </div>
+    </section>
+
+    <!-- SLIDE 8: Widget Button -->
+    <section class="slide bg-white slide-content">
+        <h2>Widget Button: Botones Interactivos</h2>
+        
+        <div class="code-block" style="margin-bottom: 1.5rem; font-size: 0.7rem;">
+<span class="comment"># Botón simple</span>
+button1 = tk.Button(root, text=<span class="string">"Haz clic"</span>)
+
+<span class="comment"># Botón estilizado con comando (callback)</span>
+button2 = tk.Button(root,
+    text=<span class="string">"Saludar"</span>,
+    font=(<span class="string">"Arial"</span>, 12),
+    bg=<span class="string">"#38bdf8"</span>,
+    fg=<span class="string">"white"</span>,
+    width=15,
+    height=2,
+    command=saludar                 <span class="comment"># función callback</span>
+)
+
+button1.pack(pady=5)
+button2.pack(pady=5)
+        </div>
+
+        <div class="box box-info">
+            <strong>Parámetro clave: command=</strong>
+            <p style="margin-top: 0.75rem; font-size: 0.9rem;">Vincula una <strong>función callback</strong> que se ejecutará cuando hagas clic en el botón.</p>
+            <p style="margin-top: 0.75rem; font-size: 0.9rem;"><span style="background: #fef3c7; padding: 0.25rem 0.5rem; border-radius: 3px;">⚠️ Importante:</span> Escribe <code>command=saludar</code> (SIN paréntesis). Si escribes <code>command=saludar()</code>, se ejecutará al crear el botón, no al hacer clic.</p>
+        </div>
+    </section>
+
+    <!-- SLIDE 9: Widget Entry -->
+    <section class="slide bg-white slide-content">
+        <h2>Widget Entry: Campo de Entrada de Texto</h2>
+        
+        <div class="code-block" style="margin-bottom: 1.5rem; font-size: 0.7rem;">
+<span class="comment"># Entry simple</span>
+entry1 = tk.Entry(root)
+
+<span class="comment"># Entry estilizado</span>
+entry2 = tk.Entry(root,
+    width=30,
+    font=(<span class="string">"Arial"</span>, 12),
+    fg=<span class="string">"#334155"</span>,
+    bg=<span class="string">"#f1f5f9"</span>
+)
+
+<span class="comment"># LEER el texto que escribió el usuario</span>
+texto = entry2.get()
+
+<span class="comment"># INSERTAR texto programáticamente</span>
+entry2.insert(0, <span class="string">"Escribe aquí..."</span>)
+
+<span class="comment"># BORRAR todo el contenido</span>
+entry2.delete(0, tk.END)
+
+entry1.pack(pady=5)
+entry2.pack(pady=5)
+        </div>
+
+        <div class="box box-success">
+            <strong>Métodos importantes:</strong>
+            <ul style="margin-top: 0.75rem; margin-left: 1.5rem;">
+                <li><code>.get()</code> – Lee el texto que escribió el usuario</li>
+                <li><code>.insert(posición, texto)</code> – Inserta texto en una posición</li>
+                <li><code>.delete(inicio, fin)</code> – Borra texto (0 a tk.END para todo)</li>
+                <li><code>.config(state="disabled")</code> – Deshabilita la entrada</li>
+            </ul>
+        </div>
+    </section>
+
+    <!-- SLIDE 10: Callbacks y Eventos -->
+    <section class="slide bg-white slide-content">
+        <h2>Callbacks: Respondiendo a Eventos del Usuario</h2>
+        
+        <p style="margin-bottom: 1rem;"><strong>Callback</strong> = Función que se ejecuta automáticamente cuando ocurre un evento (clic, escritura, etc.)</p>
+
+        <div class="code-block" style="margin-bottom: 1.5rem; font-size: 0.7rem;">
+<span class="comment"># 1. Definir una función callback</span>
+<span class="keyword">def</span> <span class="function">saludar</span>():
+    print(<span class="string">"¡Hola! Se hizo clic en el botón"</span>)
+
+<span class="comment"># 2. Vincularla a un botón con command=</span>
+button = tk.Button(root,
+    text=<span class="string">"Saludo"</span>,
+    command=saludar        <span class="comment"># sin paréntesis (importante!)</span>
+)
+button.pack()
+
+root.mainloop()
+<span class="comment"># Cuando hagas clic se ejecuta saludar()</span>
+        </div>
+
+        <div class="box box-warning">
+            <strong>Flujo de ejecución:</strong>
+            <ol style="margin-top: 0.75rem; margin-left: 1.5rem;">
+                <li>Usuario presiona el botón</li>
+                <li>Tkinter detecta el evento de clic</li>
+                <li>Se ejecuta automáticamente la función callback</li>
+                <li>El programa continúa esperando más eventos</li>
+            </ol>
+        </div>
+    </section>
+
+    <!-- SLIDE 11: Callbacks con Parámetros (Lambda) -->
+    <section class="slide bg-white slide-content">
+        <h2>Callbacks con Parámetros usando Lambda</h2>
+        
+        <p style="margin-bottom: 1rem;"><strong>Problema:</strong> Los botones no permiten pasar argumentos directamente en <code>command=</code></p>
+
+        <div class="code-block" style="margin-bottom: 1.5rem; font-size: 0.7rem;">
+<span class="comment"># ❌ ESTO NO FUNCIONA</span>
+button = tk.Button(root, command=saludar(<span class="string">"Juan"</span>))
+<span class="comment"># Se ejecutaría al crear el botón, no al hacer clic</span>
+
+<span class="comment"># ✅ SOLUCIÓN: usar lambda (función anónima)</span>
+button = tk.Button(root,
+    text=<span class="string">"Saluda a Juan"</span>,
+    command=<span class="keyword">lambda</span>: saludar(<span class="string">"Juan"</span>)
+)
+
+<span class="comment"># Función callback que recibe parámetro</span>
+<span class="keyword">def</span> <span class="function">saludar</span>(nombre):
+    print(f<span class="string">"¡Hola, {nombre}!"</span>)
+
+button.pack()
+        </div>
+
+        <div class="box box-info">
+            <strong>Sintaxis Lambda:</strong>
+            <p style="margin-top: 0.75rem; font-size: 0.9rem;"><code>lambda [parámetros]: expresión</code></p>
+            <p style="margin-top: 0.75rem; font-size: 0.9rem;">Lambda crea una función anónima de una línea que captura los argumentos.</p>
+        </div>
+    </section>
+
+    <!-- SLIDE 12: Pack vs Grid -->
+    <section class="slide bg-white slide-content">
+        <h2>Gestores de Geometría: pack() vs grid()</h2>
+        
+        <p style="margin-bottom: 1rem;"><strong>Los gestores determinan cómo se posicionan y organizan los widgets en la ventana.</strong></p>
+
+        <div class="grid-2">
+            <div class="box box-info">
+                <h4>pack()</h4>
+                <p style="margin-top: 0.75rem; font-size: 0.9rem;">Apila widgets <strong>verticalmente</strong> de forma automática. Sencillo para layouts simples.</p>
+                <div class="code-block" style="font-size: 0.65rem; margin-top: 0.75rem;">
+label1.pack(pady=10)
+label2.pack(pady=10)
+button.pack(pady=10)
+<span class="comment"># Resultado: vertical</span>
+                </div>
+                <p style="margin-top: 0.75rem; font-size: 0.85rem;"><strong>✅ Ventajas:</strong> Simple, perfecto para principiantes</p>
+                <p style="font-size: 0.85rem;"><strong>❌ Desventajas:</strong> Difícil para layouts complejos</p>
+            </div>
+            <div class="box box-success">
+                <h4>grid()</h4>
+                <p style="margin-top: 0.75rem; font-size: 0.9rem;">Organiza widgets en una <strong>tabla de filas y columnas</strong>. Control preciso.</p>
+                <div class="code-block" style="font-size: 0.65rem; margin-top: 0.75rem;">
+label.grid(row=0, column=0)
+entry.grid(row=0, column=1)
+button.grid(row=1, column=0,
+            columnspan=2)
+                </div>
+                <p style="margin-top: 0.75rem; font-size: 0.85rem;"><strong>✅ Ventajas:</strong> Control total, perfecto para formularios</p>
+                <p style="font-size: 0.85rem;"><strong>❌ Desventajas:</strong> Más código necesario</p>
+            </div>
+        </div>
+
+        <div class="box box-error" style="margin-top: 1rem;">
+            <strong>⚠️ Regla de Oro:</strong> Nunca mezcles <code>pack()</code> y <code>grid()</code> en la misma ventana. Elige uno y úsalo consistentemente.
+        </div>
+    </section>
+
+    <!-- SLIDE 13: Manejo de Errores -->
+    <section class="slide bg-white slide-content">
+        <h2>Manejo de Errores: try/except</h2>
+        
+        <p style="margin-bottom: 1rem;"><strong>Evita que el programa se bloquee si algo falla inesperadamente.</strong></p>
+
+        <div class="code-block" style="margin-bottom: 1.5rem; font-size: 0.7rem;">
+<span class="keyword">try</span>:
+    <span class="comment"># Código que INTENTA ejecutarse</span>
+    num = <span class="number">float</span>(entrada.get())
+    resultado = 100 / num
+    label.config(text=f<span class="string">"Resultado: {resultado}"</span>)
+
+<span class="keyword">except</span> ValueError:
+    <span class="comment"># Si el usuario escribió texto no numérico</span>
+    label.config(text=<span class="string">"❌ Error: ingresa un número válido"</span>)
+
+<span class="keyword">except</span> ZeroDivisionError:
+    <span class="comment"># Si el usuario ingresó cero (división por 0)</span>
+    label.config(text=<span class="string">"❌ Error: no puedes dividir entre 0"</span>)
+        </div>
+
+        <div class="grid-2">
+            <div class="box box-info">
+                <h4>try</h4>
+                <p style="margin-top: 0.75rem; font-size: 0.9rem;">Intenta ejecutar el código. Si algo falla, se interrumpe y va a <code>except</code></p>
+            </div>
+            <div class="box box-info">
+                <h4>except</h4>
+                <p style="margin-top: 0.75rem; font-size: 0.9rem;">Captura el error específico y ejecuta código alternativo</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- SLIDE 14: Ejercicio Práctico - Calculadora Simple -->
+    <section class="slide bg-white slide-content">
+        <h2>Ejercicio Práctico: Calculadora Simple</h2>
+        
+        <div class="box box-warning" style="margin-bottom: 1rem;">
+            <strong>Requisitos:</strong>
+            <ul style="margin-top: 0.75rem; margin-left: 1.5rem;">
+                <li>Dos campos Entry para ingresar números</li>
+                <li>Un botón "Sumar" que realice la operación</li>
+                <li>Una Label que muestre el resultado</li>
+                <li>Manejo de errores si no se ingresan números válidos</li>
+            </ul>
+        </div>
+
+        <div class="code-block" style="font-size: 0.65rem;">
+<span class="keyword">import</span> tkinter <span class="keyword">as</span> tk
+
+root = tk.Tk()
+root.title(<span class="string">"Calculadora"</span>)
+root.geometry(<span class="string">"300x250"</span>)
+
+<span class="comment"># Callback para sumar</span>
+<span class="keyword">def</span> <span class="function">calcular_suma</span>():
+    <span class="keyword">try</span>:
+        num1 = <span class="number">float</span>(entry1.get())
+        num2 = <span class="number">float</span>(entry2.get())
+        resultado = num1 + num2
+        label_resultado.config(text=f<span class="string">"Resultado: {resultado}"</span>)
+    <span class="keyword">except</span> ValueError:
+        label_resultado.config(text=<span class="string">"Error: números válidos"</span>)
+
+<span class="comment"># Widgets</span>
+tk.Label(root, text=<span class="string">"Número 1:"</span>).pack()
+entry1 = tk.Entry(root)
+entry1.pack(pady=5)
+
+tk.Label(root, text=<span class="string">"Número 2:"</span>).pack()
+entry2 = tk.Entry(root)
+entry2.pack(pady=5)
+
+tk.Button(root, text=<span class="string">"Sumar"</span>, command=calcular_suma,
+          bg=<span class="string">"#38bdf8"</span>, fg=<span class="string">"white"</span>).pack(pady=10)
+
+label_resultado = tk.Label(root, text=<span class="string">"Resultado: -"</span>)
+label_resultado.pack(pady=10)
+
+root.mainloop()
+        </div>
+    </section>
+
+    <!-- SLIDE 15: Resumen -->
+    <section class="slide slide-header">
+        <h1 style="font-size: 2.5rem;">✅ Resumen Sesión 1</h1>
+        
+        <div style="text-align: left; margin-top: 2rem; max-width: 800px;">
+            <p style="font-size: 1rem; margin-bottom: 1.5rem;"><strong>Conceptos clave aprendidos:</strong></p>
+            <ul style="color: white; font-size: 0.95rem; line-height: 2; margin-left: 2rem;">
+                <li>✓ Estructura básica de Tkinter (Tk, mainloop, geometry)</li>
+                <li>✓ 3 widgets principales: Label, Button, Entry</li>
+                <li>✓ Eventos y Callbacks (command=función)</li>
+                <li>✓ pack() vs grid() para organizar widgets</li>
+                <li>✓ Funciones Python (parámetros, return, scope)</li>
+                <li>✓ Manejo de errores (try/except)</li>
+                <li>✓ Lambda para callbacks con parámetros</li>
+                <li>✓ Tu primera calculadora funcional 🎉</li>
+            </ul>
+
+            <p style="font-size: 1rem; margin-top: 2rem; margin-bottom: 1rem;"><strong>🎯 Desafíos Opcionales:</strong></p>
+            <ul style="color: white; font-size: 0.9rem; line-height: 1.8; margin-left: 2rem;">
+                <li>➕ Amplía la calculadora a 4 operaciones (+, -, *, /)</li>
+                <li>🎨 Mejora el diseño con más colores y estilos</li>
+                <li>📱 Crea una calculadora con botones numéricos (0-9) usando grid()</li>
+                <li>💾 Añade historial de cálculos</li>
+            </ul>
+        </div>
+    </section>
+
+    <!-- SLIDE 6: Parámetros de Tk() -->
+    <section class="slide p-16 col" style="background-color: #ffffff;">
+        <h2 style="color: #0284c7; margin-bottom: 0.8rem;">Configuración Detallada de la Ventana</h2>
+        
+        <div class="code-block" style="margin-bottom: 1rem;">
+<span class="keyword">import</span> tkinter <span class="keyword">as</span> tk
+
+ventana = tk.Tk()
+
+<span class="comment"># Título de la ventana (lo que aparece en la barra)</span>
+ventana.title(<span class="string">"Aplicación de Calculadora"</span>)
+
+<span class="comment"># Tamaño: ancho x alto (en píxeles)</span>
+ventana.geometry(<span class="string">"500x350"</span>)
+
+<span class="comment"># Color de fondo de toda la ventana</span>
+ventana.config(bg=<span class="string">"#f0f9ff"</span>)  <span class="comment"># Azul claro</span>
+
+<span class="comment"># Tamaño mínimo (usuario no puede hacer más pequeña)</span>
+ventana.minsize(400, 300)
+
+<span class="comment"># Tamaño máximo (usuario no puede hacer más grande)</span>
+ventana.maxsize(800, 600)
+
+<span class="comment"># Centra la ventana en pantalla</span>
+ventana.geometry(<span class="string">"500x350+400+200"</span>)  <span class="comment"># +x+y = posición</span>
+
+ventana.mainloop()
+        </div>
+
+        <div class="comparison-box">
+            <strong>💡 Tip:</strong> Puedes usar nombres de colores (<code>"blue"</code>) o códigos hexadecimales (<code>"#0ea5e9"</code>)
+        </div>
+    </section>
+
+    <!-- SLIDE 7: ¿Qué es mainloop()? -->
+    <section class="slide p-16 col" style="background-color: #ffffff;">
+        <h2 style="color: #0284c7; margin-bottom: 0.8rem;">Entendiendo mainloop(): El Bucle Principal</h2>
+        
+        <div class="grid-2">
+            <div>
+                <h4 style="color: #0ea5e9; margin-bottom: 0.6rem;">🔄 ¿Qué hace mainloop()?</h4>
+                <p style="color: #374151; font-size: 0.9rem; margin-bottom: 0.8rem;">Es un <strong>bucle infinito</strong> que:</p>
+                <ol style="color: #374151; font-size: 0.85rem;">
+                    <li>Espera eventos (clics, teclas, etc.)</li>
+                    <li>Procesa lo que el usuario hace</li>
+                    <li>Actualiza la pantalla</li>
+                    <li>Vuelve al paso 1 (infinitamente)</li>
+                </ol>
+            </div>
+            <div class="card-dark">
+                <p style="color: #e0f2fe; margin-bottom: 0.6rem;"><strong>Sin mainloop():</strong></p>
+                <div class="code-block" style="font-size: 0.6rem; border-left-color: #f87171;">
+ventana = tk.Tk()
+ventana.title(<span class="string">"Test"</span>)
+<span class="comment"># ❌ Sin mainloop()</span>
+<span class="comment"># Ventana aparece y desaparece</span>
+<span class="comment"># al instante</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="important-box" style="margin-top: 0.8rem;">
+            <strong>⚠️ IMPORTANTE:</strong> <code>mainloop()</code> SIEMPRE va al final de tu código, después de crear todos los widgets
+        </div>
+    </section>
+
+    <!-- SLIDE 8: Widgets - Label (Parte 1) -->
+    <section class="slide p-16 col" style="background-color: #ffffff;">
+        <h2 style="color: #0284c7; margin-bottom: 0.8rem;">Widget 1: Label - Mostrar Texto</h2>
+        
+        <p style="color: #374151; margin-bottom: 0.8rem; font-size: 0.9rem;"><strong>Label</strong> = Etiqueta que muestra texto o imágenes (solo lectura, el usuario NO puede modificarla)</p>
+
+        <div class="code-block" style="margin-bottom: 1rem;">
+<span class="keyword">import</span> tkinter <span class="keyword">as</span> tk
+
+ventana = tk.Tk()
+ventana.title(<span class="string">"Ejemplo Label"</span>)
+ventana.geometry(<span class="string">"400x250"</span>)
+
+<span class="comment"># Crear un Label SIMPLE</span>
+etiqueta1 = tk.Label(
+    ventana,
+    text=<span class="string">"Hola, Mundo!"</span>
+)
+etiqueta1.pack()
+
+<span class="comment"># Crear un Label CON ESTILO</span>
+etiqueta2 = tk.Label(
+    ventana,
+    text=<span class="string">"Título importante"</span>,
+    font=(<span class="string">"Arial"</span>, 20, <span class="string">"bold"</span>),  <span class="comment"># Fuente, tamaño, estilo</span>
+    fg=<span class="string">"#0284c7"</span>,  <span class="comment"># Color del texto (foreground)</span>
+    bg=<span class="string">"#f0f9ff"</span>,  <span class="comment"># Color de fondo (background)</span>
+    padx=10,  <span class="comment"># Espacio horizontal interno</span>
+    pady=10   <span class="comment"># Espacio vertical interno</span>
+)
+etiqueta2.pack()
+
+ventana.mainloop()
+        </div>
+
+        <div class="card-accent">
+            <strong>📌 Parámetros clave:</strong> <code>text</code>, <code>font</code>, <code>fg</code>, <code>bg</code>, <code>padx</code>, <code>pady</code>
+        </div>
+    </section>
+
+    <!-- SLIDE 9: Label - Parámetros Detallados -->
+    <section class="slide p-16 col" style="background-color: #ffffff;">
+        <h2 style="color: #0284c7; margin-bottom: 0.8rem;">Label: Parámetros Explicados</h2>
+        
+        <div class="grid-2" style="font-size: 0.85rem;">
+            <div class="card">
+                <h4 style="color: #0284c7; margin-bottom: 0.4rem;">📝 text</h4>
+                <p style="color: #374151; margin-bottom: 0.3rem;">El texto a mostrar</p>
+                <p style="color: #6b7280; font-size: 0.75rem;"><code>text="Hola"</code></p>
+            </div>
+            <div class="card">
+                <h4 style="color: #0284c7; margin-bottom: 0.4rem;">🎨 font</h4>
+                <p style="color: #374151; margin-bottom: 0.3rem;">Fuente, tamaño, estilo</p>
+                <p style="color: #6b7280; font-size: 0.75rem;"><code>("Arial", 18, "bold")</code></p>
+            </div>
+            <div class="card">
+                <h4 style="color: #0284c7; margin-bottom: 0.4rem;">🎨 fg (foreground)</h4>
+                <p style="color: #374151; margin-bottom: 0.3rem;">Color del texto</p>
+                <p style="color: #6b7280; font-size: 0.75rem;"><code>fg="#0284c7"</code></p>
+            </div>
+            <div class="card">
+                <h4 style="color: #0284c7; margin-bottom: 0.4rem;">🎨 bg (background)</h4>
+                <p style="color: #374151; margin-bottom: 0.3rem;">Color de fondo</p>
+                <p style="color: #6b7280; font-size: 0.75rem;"><code>bg="#f0f9ff"</code></p>
+            </div>
+            <div class="card">
+                <h4 style="color: #0284c7; margin-bottom: 0.4rem;">📏 width</h4>
+                <p style="color: #374151; margin-bottom: 0.3rem;">Ancho en caracteres</p>
+                <p style="color: #6b7280; font-size: 0.75rem;"><code>width=20</code></p>
+            </div>
+            <div class="card">
+                <h4 style="color: #0284c7; margin-bottom: 0.4rem;">📏 height</h4>
+                <p style="color: #374151; margin-bottom: 0.3rem;">Alto en líneas</p>
+                <p style="color: #6b7280; font-size: 0.75rem;"><code>height=5</code></p>
+            </div>
+        </div>
+
+        <div class="important-box" style="margin-top: 1rem;">
+            <strong>Estilos de fuente:</strong> <code>"normal"</code>, <code>"bold"</code> (negrita), <code>"italic"</code> (cursiva)
+        </div>
+    </section>
+
+    <!-- SLIDE 10: Widget 2: Button -->
+    <section class="slide p-16 col" style="background-color: #ffffff;">
+        <h2 style="color: #0284c7; margin-bottom: 0.8rem;">Widget 2: Button - Botones Clickeables</h2>
+        
+        <p style="color: #374151; margin-bottom: 0.8rem; font-size: 0.9rem;"><strong>Button</strong> = Botón que el usuario puede presionar para ejecutar una acción</p>
+
+        <div class="code-block" style="margin-bottom: 1rem;">
+<span class="keyword">import</span> tkinter <span class="keyword">as</span> tk
+
+ventana = tk.Tk()
+ventana.title(<span class="string">"Botones"</span>)
+ventana.geometry(<span class="string">"400x250"</span>)
+
+<span class="comment"># PASO 1: Definir qué hace el botón</span>
+<span class="keyword">def</span> <span class="function">saludar</span>():
+    print(<span class="string">"¡Hiciste clic!"</span>)
+
+<span class="comment"># PASO 2: Crear el botón</span>
+boton = tk.Button(
+    ventana,
+    text=<span class="string">"Click aquí"</span>,
+    command=saludar,  <span class="comment"># Función que se ejecuta al hacer clic</span>
+    bg=<span class="string">"#0284c7"</span>,  <span class="comment"># Color de fondo</span>
+    fg=<span class="string">"white"</span>,  <span class="comment"># Color del texto</span>
+    font=(<span class="string">"Arial"</span>, 14, <span class="string">"bold"</span>),
+    padx=20,
+    pady=10
+)
+
+<span class="comment"># PASO 3: Mostrar el botón</span>
+boton.pack()
+
+ventana.mainloop()
+        </div>
+
+        <div class="card-success">
+            <strong>🎯 Concepto clave:</strong> <code>command=</code> especifica qué función ejecutar cuando se hace clic
+        </div>
+    </section>
+
+    <!-- SLIDE 11: Callbacks - Funciones que se Ejecutan -->
+    <section class="slide p-16 col" style="background-color: #ffffff;">
+        <h2 style="color: #0284c7; margin-bottom: 0.8rem;">Callbacks: Funciones Que Se Ejecutan al Hacer Clic</h2>
+        
+        <div class="grid-2">
+            <div>
+                <h4 style="color: #0ea5e9; margin-bottom: 0.6rem;">¿Qué es un Callback?</h4>
+                <p style="color: #374151; font-size: 0.85rem; margin-bottom: 0.6rem;">Una <strong>función</strong> que se ejecuta cuando ocurre un <strong>evento</strong> (clic de botón)</p>
+                <p style="color: #374151; font-size: 0.85rem;"><strong>Ejemplo:</strong></p>
+                <div class="code-block" style="font-size: 0.6rem;">
+<span class="keyword">def</span> <span class="function">al_hacer_clic</span>():
+    print(<span class="string">"Botón presionado"</span>)
+
+boton.config(command=al_hacer_clic)
+                </div>
+            </div>
+            <div class="card-dark">
+                <p style="color: #e0f2fe; margin-bottom: 0.8rem;"><strong>Flujo de ejecución:</strong></p>
+                <p style="color: #bae6fd; margin-bottom: 0.3rem;">1️⃣ Usuario presiona botón</p>
+                <p style="color: #bae6fd; margin-bottom: 0.3rem;">2️⃣ Tkinter detecta evento</p>
+                <p style="color: #bae6fd; margin-bottom: 0.3rem;">3️⃣ Se ejecuta la función callback</p>
+                <p style="color: #bae6fd;">4️⃣ Continúa esperando eventos</p>
+            </div>
+        </div>
+
+        <div class="important-box" style="margin-top: 0.8rem;">
+            <strong>⚠️ IMPORTANTE:</strong> En <code>command=</code>, escribe el nombre de la función <strong>SIN paréntesis</strong>: <code>command=saludar</code> (no <code>command=saludar()</code>)
+        </div>
+    </section>
+
+    <!-- SLIDE 12: Widget 3: Entry -->
+    <section class="slide p-16 col" style="background-color: #ffffff;">
+        <h2 style="color: #0284c7; margin-bottom: 0.8rem;">Widget 3: Entry - Campos de Entrada</h2>
+        
+        <p style="color: #374151; margin-bottom: 0.8rem; font-size: 0.9rem;"><strong>Entry</strong> = Campo donde el usuario escribe texto (contrario a Label que es solo lectura)</p>
+
+        <div class="code-block" style="margin-bottom: 1rem;">
+<span class="keyword">import</span> tkinter <span class="keyword">as</span> tk
+
+ventana = tk.Tk()
+ventana.title(<span class="string">"Entry - Campo de Texto"</span>)
+ventana.geometry(<span class="string">"400x200"</span>)
+
+<span class="comment"># CREAR un campo de entrada</span>
+entrada = tk.Entry(
+    ventana,
+    width=30,  <span class="comment"># Ancho en caracteres</span>
+    font=(<span class="string">"Arial"</span>, 12),
+    fg=<span class="string">"#0284c7"</span>,
+    bg=<span class="string">"#f0f9ff"</span>
+)
+entrada.pack(pady=10)
+
+<span class="comment"># LEER el valor que escribió el usuario</span>
+<span class="keyword">def</span> <span class="function">mostrar_texto</span>():
+    texto = entrada.get()  <span class="comment"># Obtener lo que escribió</span>
+    print(<span class="string">f"Escribiste: {texto}"</span>)
+
+boton = tk.Button(ventana, text=<span class="string">"Ver texto"</span>, command=mostrar_texto)
+boton.pack()
+
+ventana.mainloop()
+        </div>
+
+        <div class="card-accent">
+            <strong>📌 Método clave:</strong> <code>.get()</code> lee el texto que escribió el usuario
+        </div>
+    </section>
+
+    <!-- SLIDE 13: Entry - Más Parámetros -->
+    <section class="slide p-16 col" style="background-color: #ffffff;">
+        <h2 style="color: #0284c7; margin-bottom: 0.8rem;">Entry: Configuración Avanzada</h2>
+        
+        <div class="code-block" style="margin-bottom: 0.8rem;">
+<span class="comment"># Entry básico</span>
+entrada = tk.Entry(ventana, width=25)
+
+<span class="comment"># Entry CON ESTILO</span>
+entrada = tk.Entry(
+    ventana,
+    width=30,
+    font=(<span class="string">"Arial"</span>, 14),
+    fg=<span class="string">"#0284c7"</span>,  <span class="comment"># Color del texto</span>
+    bg=<span class="string">"#f0f9ff"</span>,  <span class="comment"># Color de fondo</span>
+    show=<span class="string">"*"</span>,  <span class="comment"># Para contraseñas: oculta los caracteres</span>
+    justify=<span class="string">"center"</span>  <span class="comment"># Alineación: "left", "center", "right"</span>
+)
+
+<span class="comment"># ESTABLECER un valor por defecto</span>
+entrada.insert(0, <span class="string">"Texto inicial"</span>)
+
+<span class="comment"># BORRAR todo el contenido</span>
+entrada.delete(0, tk.END)
+
+<span class="comment"># LEER el texto</span>
+texto = entrada.get()
+
+<span class="comment"># DESHABILITAR entrada (el usuario no puede escribir)</span>
+entrada.config(state=<span class="string">"disabled"</span>)
+
+<span class="comment"># HABILITAR entrada</span>
+entrada.config(state=<span class="string">"normal"</span>)
+        </div>
+
+        <div class="grid-2">
+            <div class="highlight-box">
+                <strong>show="*":</strong> Útil para campos de contraseña
+            </div>
+            <div class="highlight-box">
+                <strong>tk.END:</strong> Representa el final del texto
+            </div>
+        </div>
+    </section>
+
+    <!-- SLIDE 14: Pack vs Grid -->
+    <section class="slide p-16 col" style="background-color: #ffffff;">
+        <h2 style="color: #0284c7; margin-bottom: 0.8rem;">Gestores de Layout: pack() vs grid()</h2>
+        
+        <div class="grid-2" style="font-size: 0.85rem;">
+            <div class="card">
+                <h4 style="color: #0284c7; margin-bottom: 0.6rem;">📦 pack()</h4>
+                <p style="color: #374151; margin-bottom: 0.6rem;"><strong>Apila elementos</strong> verticalmente (uno debajo de otro)</p>
+                <div class="code-block" style="font-size: 0.6rem;">
+<span class="comment"># Los widgets se apilan</span>
+etiqueta.pack()
+entrada.pack()
+boton.pack()
+
+<span class="comment"># Resultado: vertical</span>
+                </div>
+                <ul style="color: #374151; font-size: 0.8rem; margin-top: 0.5rem;">
+                    <li>✅ Simple para layouts básicos</li>
+                    <li>✅ Perfecto para principiantes</li>
+                    <li>❌ Difícil para layouts complejos</li>
+                </ul>
+            </div>
+            <div class="card" style="background: linear-gradient(135deg, #f0fdf4 0%, #dcfce7 100%); border-color: #22c55e;">
+                <h4 style="color: #22c55e; margin-bottom: 0.6rem;">🔲 grid()</h4>
+                <p style="color: #374151; margin-bottom: 0.6rem;"><strong>Tabla de filas/columnas</strong> (máximo control)</p>
+                <div class="code-block" style="font-size: 0.6rem;">
+<span class="comment"># Posicionar en tabla</span>
+etiqueta.grid(row=0, column=0)
+entrada.grid(row=0, column=1)
+boton.grid(row=1, column=0)
+                </div>
+                <ul style="color: #374151; font-size: 0.8rem; margin-top: 0.5rem;">
+                    <li>✅ Perfecto para formularios</li>
+                    <li>✅ Control completo</li>
+                    <li>❌ Más código</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="important-box" style="margin-top: 0.8rem;">
+            <strong>⚠️ REGLA:</strong> Nunca mezcles <code>pack()</code> y <code>grid()</code> en la misma ventana, elige uno
+        </div>
+    </section>
+
+    <!-- SLIDE 15: Grid - Explicación Detallada -->
+    <section class="slide p-16 col" style="background-color: #ffffff;">
+        <h2 style="color: #0284c7; margin-bottom: 0.8rem;">grid(): Sistema de Tabla (Filas y Columnas)</h2>
+        
+        <div class="grid-2" style="margin-bottom: 1rem;">
+            <div>
+                <h4 style="color: #0ea5e9; margin-bottom: 0.6rem;">¿Cómo Funciona grid()?</h4>
+                <p style="color: #374151; font-size: 0.85rem; margin-bottom: 0.6rem;">Imagina una <strong>tabla de Excel</strong>:</p>
+                <ul style="color: #374151; font-size: 0.85rem;">
+                    <li><code>row</code> = número de fila (0, 1, 2...)</li>
+                    <li><code>column</code> = número de columna (0, 1, 2...)</li>
+                    <li>Empezamos desde (0, 0) arriba a la izquierda</li>
+                </ul>
+            </div>
+            <div class="widget-demo">
+                <table style="width: 100%; border-collapse: collapse; font-size: 0.75rem;">
+                    <tr>
+                        <td style="border: 1px solid #0ea5e9; padding: 0.4rem; text-align: center;">(0,0) Label</td>
+                        <td style="border: 1px solid #0ea5e9; padding: 0.4rem; text-align: center;">(0,1) Entry</td>
+                    </tr>
+                    <tr>
+                        <td style="border: 1px solid #0ea5e9; padding: 0.4rem; text-align: center;">(1,0) Button</td>
+                        <td style="border: 1px solid #0ea5e9; padding: 0.4rem; text-align: center;">(1,1) Label</td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+
+        <div class="code-block" style="margin-bottom: 0.8rem;">
+<span class="comment"># Ejemplo: Formulario con grid()</span>
+tk.Label(ventana, text=<span class="string">"Nombre:"</span>).grid(row=0, column=0, sticky=<span class="string">"w"</span>)
+nombre = tk.Entry(ventana).grid(row=0, column=1)
+
+tk.Label(ventana, text=<span class="string">"Email:"</span>).grid(row=1, column=0, sticky=<span class="string">"w"</span>)
+email = tk.Entry(ventana).grid(row=1, column=1)
+
+boton = tk.Button(ventana, text=<span class="string">"Enviar"</span>).grid(row=2, column=0, columnspan=2)
+        </div>
+
+        <div class="comparison-box">
+            <strong>sticky:</strong> Alineación ("n", "s", "e", "w" = norte, sur, este, oeste)
+        </div>
+    </section>
+
+    <!-- SLIDE 16: Repaso Python - Funciones -->
+    <section class="slide p-16 col" style="background-color: #ffffff;">
+        <h2 style="color: #0284c7; margin-bottom: 0.8rem;">Repaso Python: Funciones (Cruciales para Callbacks)</h2>
+        
+        <p style="color: #374151; margin-bottom: 0.8rem; font-size: 0.9rem;"><strong>¿Por qué?</strong> Los callbacks SON funciones. Debes entenderlas bien.</p>
+
+        <div class="code-block" style="margin-bottom: 0.8rem;">
+<span class="comment"># 1. Función SIN parámetros</span>
+<span class="keyword">def</span> <span class="function">saludar</span>():
+    print(<span class="string">"Hola"</span>)
+
+saludar()  <span class="comment"># Ejecutar</span>
+
+<span class="comment"># 2. Función CON parámetros</span>
+<span class="keyword">def</span> <span class="function">sumar</span>(a, b):
+    resultado = a + b
+    <span class="keyword">return</span> resultado
+
+print(sumar(5, 3))  <span class="comment"># 8</span>
+
+<span class="comment"># 3. Función que retorna valor</span>
+<span class="keyword">def</span> <span class="function">cuadrado</span>(n):
+    <span class="keyword">return</span> n * n
+
+x = cuadrado(4)  <span class="comment"># x = 16</span>
+
+<span class="comment"># 4. Función con valor por defecto</span>
+<span class="keyword">def</span> <span class="function">saludar_persona</span>(nombre=<span class="string">"Usuario"</span>):
+    <span class="keyword">return</span> f<span class="string">"Hola, {nombre}"</span>
+
+print(saludar_persona())  <span class="comment"># Hola, Usuario</span>
+print(saludar_persona(<span class="string">"Juan"</span>))  <span class="comment"># Hola, Juan</span>
+        </div>
+
+        <div class="important-box">
+            <strong>En Tkinter:</strong> Los callbacks son funciones <strong>SIN parámetros</strong> que se ejecutan al hacer clic
+        </div>
+    </section>
+
+    <!-- SLIDE 17: Repaso Python - Módulos e Importaciones -->
+    <section class="slide p-16 col" style="background-color: #ffffff;">
+        <h2 style="color: #0284c7; margin-bottom: 0.8rem;">Repaso Python: Módulos e Importaciones</h2>
+        
+        <div class="grid-2" style="margin-bottom: 1rem;">
+            <div>
+                <h4 style="color: #0ea5e9; margin-bottom: 0.6rem;">¿Qué es un Módulo?</h4>
+                <p style="color: #374151; font-size: 0.85rem;">Un <strong>archivo Python</strong> (.py) que contiene código reutilizable</p>
+                <p style="color: #374151; font-size: 0.85rem; margin-top: 0.6rem;"><strong>Ejemplos:</strong></p>
+                <ul style="color: #374151; font-size: 0.85rem;">
+                    <li><code>tkinter</code> - GUIs</li>
+                    <li><code>math</code> - Matemáticas</li>
+                    <li><code>os</code> - Sistema operativo</li>
+                </ul>
+            </div>
+            <div class="card-dark">
+                <h4 style="color: #e0f2fe; margin-bottom: 0.6rem;">Las 3 Formas de Importar</h4>
+                <div class="code-block" style="font-size: 0.6rem;">
+<span class="comment"># 1. Importar completo</span>
+<span class="keyword">import</span> tkinter
+
+<span class="comment"># 2. Importar con alias</span>
+<span class="keyword">import</span> tkinter <span class="keyword">as</span> tk
+
+<span class="comment"># 3. Importar específico</span>
+<span class="keyword">from</span> tkinter <span class="keyword">import</span> Label, Button
+                </div>
+            </div>
+        </div>
+
+        <div class="highlight-box">
+            <strong>💡 Recomendación:</strong> Para este curso, siempre usa: <code>import tkinter as tk</code>
+        </div>
+    </section>
+
+    <!-- SLIDE 18: Ejercicio 1 - Hola Mundo GUI -->
+    <section class="slide p-16 col" style="background-color: #ffffff;">
+        <h2 style="color: #0284c7; margin-bottom: 0.8rem;">Ejercicio 1: Tu Primer "Hola Mundo" GUI</h2>
+        
+        <p style="color: #374151; margin-bottom: 0.8rem; font-size: 0.9rem;"><strong>Objetivo:</strong> Crear una ventana con una etiqueta</p>
+
+        <div class="code-block" style="margin-bottom: 0.8rem;">
+<span class="keyword">import</span> tkinter <span class="keyword">as</span> tk
+
+<span class="comment"># Crear ventana</span>
+ventana = tk.Tk()
+ventana.title(<span class="string">"Hola Mundo"</span>)
+ventana.geometry(<span class="string">"500x300"</span>)
+ventana.config(bg=<span class="string">"#f0f9ff"</span>)
+
+<span class="comment"># Crear etiqueta</span>
+etiqueta = tk.Label(
+    ventana,
+    text=<span class="string">"¡Hola, Mundo!"</span>,
+    font=(<span class="string">"Arial"</span>, 32, <span class="string">"bold"</span>),
+    fg=<span class="string">"#0284c7"</span>,
+    bg=<span class="string">"#f0f9ff"</span>
+)
+etiqueta.pack(pady=60)
+
+<span class="comment"># Secundario: otra etiqueta pequeña</span>
+subtitulo = tk.Label(
+    ventana,
+    text=<span class="string">"Mi primera aplicación con Tkinter"</span>,
+    font=(<span class="string">"Arial"</span>, 12),
+    fg=<span class="string">"#64748b"</span>
+)
+subtitulo.pack()
+
+ventana.mainloop()
+        </div>
+
+        <div class="card-success">
+            <p style="color: #374151;"><strong>✅ Resultado:</strong> Una ventana bonita con dos etiquetas</p>
+            <p style="color: #374151; margin-top: 0.5rem; font-size: 0.8rem;">💾 Guarda este código en un archivo <code>hola_mundo.py</code> y ejecuta: <code>python hola_mundo.py</code></p>
+        </div>
+    </section>
+
+    <!-- SLIDE 19: Ejercicio 2 - Botón Interactivo -->
+    <section class="slide p-16 col" style="background-color: #ffffff;">
+        <h2 style="color: #0284c7; margin-bottom: 0.8rem;">Ejercicio 2: Botón que Cambia Texto</h2>
+        
+        <p style="color: #374151; margin-bottom: 0.8rem; font-size: 0.9rem;"><strong>Objetivo:</strong> Un botón que actualiza una etiqueta cuando haces clic</p>
+
+        <div class="code-block" style="margin-bottom: 0.8rem;">
+<span class="keyword">import</span> tkinter <span class="keyword">as</span> tk
+
+ventana = tk.Tk()
+ventana.title(<span class="string">"Botón Interactivo"</span>)
+ventana.geometry(<span class="string">"400x300"</span>)
+ventana.config(bg=<span class="string">"#f0f9ff"</span>)
+
+<span class="comment"># Variable global para contar clics</span>
+contador = 0
+
+<span class="comment"># Función callback</span>
+<span class="keyword">def</span> <span class="function">al_hacer_clic</span>():
+    <span class="keyword">global</span> contador
+    contador += 1
+    etiqueta.config(text=f<span class="string">"¡Me hiciste clic {contador} veces! 🎉"</span>)
+
+<span class="comment"># Etiqueta (mostrará cambios)</span>
+etiqueta = tk.Label(
+    ventana,
+    text=<span class="string">"Presiona el botón"</span>,
+    font=(<span class="string">"Arial"</span>, 18),
+    fg=<span class="string">"#0284c7"</span>
+)
+etiqueta.pack(pady=30)
+
+<span class="comment"># Botón</span>
+boton = tk.Button(
+    ventana,
+    text=<span class="string">"¡Hazme clic!"</span>,
+    command=al_hacer_clic,
+    bg=<span class="string">"#0284c7"</span>,
+    fg=<span class="string">"white"</span>,
+    font=(<span class="string">"Arial"</span>, 14, <span class="string">"bold"</span>),
+    padx=30,
+    pady=15
+)
+boton.pack(pady=20)
+
+ventana.mainloop()
+        </div>
+
+        <div class="important-box">
+            <strong>⚠️ Nuevo concepto:</strong> <code>global contador</code> permite que la función modifique una variable global
+        </div>
+    </section>
+
+    <!-- SLIDE 20: Ejercicio 3 - Entrada de Usuario -->
+    <section class="slide p-16 col" style="background-color: #ffffff;">
+        <h2 style="color: #0284c7; margin-bottom: 0.8rem;">Ejercicio 3: Leer Entrada del Usuario</h2>
+        
+        <p style="color: #374151; margin-bottom: 0.8rem; font-size: 0.9rem;"><strong>Objetivo:</strong> Campo de texto + botón que procesa lo que escribió el usuario</p>
+
+        <div class="code-block" style="margin-bottom: 0.8rem;">
+<span class="keyword">import</span> tkinter <span class="keyword">as</span> tk
+
+ventana = tk.Tk()
+ventana.title(<span class="string">"Saludo Personalizado"</span>)
+ventana.geometry(<span class="string">"500x300"</span>)
+ventana.config(bg=<span class="string">"#f0f9ff"</span>)
+
+<span class="comment"># Función que lee la entrada</span>
+<span class="keyword">def</span> <span class="function">saludar</span>():
+    nombre = entrada.get()  <span class="comment"># Leer lo que escribió</span>
+    <span class="keyword">if</span> nombre == <span class="string">""</span>:
+        mensaje = <span class="string">"¡Escribe tu nombre primero!"</span>
+    <span class="keyword">else</span>:
+        mensaje = f<span class="string">"¡Hola, {nombre}! 👋"</span>
+    
+    resultado.config(text=mensaje)
+
+<span class="comment"># Interfaz</span>
+tk.Label(ventana, text=<span class="string">"¿Cuál es tu nombre?"</span>, font=(<span class="string">"Arial"</span>, 14), bg=<span class="string">"#f0f9ff"</span>).pack(pady=10)
+
+entrada = tk.Entry(ventana, width=30, font=(<span class="string">"Arial"</span>, 12))
+entrada.pack(pady=10)
+
+boton = tk.Button(ventana, text=<span class="string">"Saludar"</span>, command=saludar, bg=<span class="string">"#0284c7"</span>, fg=<span class="string">"white"</span>, font=(<span class="string">"Arial"</span>, 12, <span class="string">"bold"</span>), padx=30)
+boton.pack(pady=20)
+
+resultado = tk.Label(ventana, text=<span class="string">""</span>, font=(<span class="string">"Arial"</span>, 16, <span class="string">"bold"</span>), fg=<span class="string">"#10b981"</span>, bg=<span class="string">"#f0f9ff"</span>)
+resultado.pack(pady=20)
+
+ventana.mainloop()
+        </div>
+
+        <div class="card-accent">
+            <strong>Flujo:</strong> Usuario escribe → Presiona botón → Se ejecuta <code>saludar()</code> → Se actualiza etiqueta
+        </div>
+    </section>
+
+    <!-- SLIDE 21: Ejercicio 4 - Calculadora Simple (Parte 1) -->
+    <section class="slide p-16 col" style="background-color: #ffffff;">
+        <h2 style="color: #0284c7; margin-bottom: 0.8rem;">Ejercicio 4: Calculadora Simple (Parte I)</h2>
+        
+        <p style="color: #374151; margin-bottom: 0.8rem; font-size: 0.9rem;"><strong>Objetivo:</strong> Aplicación que suma dos números y muestra el resultado</p>
+
+        <div class="grid-2" style="margin-bottom: 1rem;">
+            <div class="highlight-box">
+                <p style="color: #0284c7; margin-bottom: 0.5rem;"><strong>Requisitos:</strong></p>
+                <ul style="color: #374151; font-size: 0.85rem;">
+                    <li>2 campos (Entry) para números</li>
+                    <li>1 botón "Sumar"</li>
+                    <li>1 etiqueta para resultado</li>
+                    <li>Manejo de errores</li>
+                </ul>
+            </div>
+            <div class="card-success">
+                <p style="color: #374151; margin-bottom: 0.5rem;"><strong>Concepto clave:</strong></p>
+                <p style="color: #374151; font-size: 0.85rem;">Convertir texto (string) a número:</p>
+                <p style="color: #6b7280; font-size: 0.8rem;"><code>float(entrada.get())</code></p>
+            </div>
+        </div>
+
+        <div class="code-block" style="margin-bottom: 0.8rem;">
+<span class="keyword">import</span> tkinter <span class="keyword">as</span> tk
+
+ventana = tk.Tk()
+ventana.title(<span class="string">"Calculadora - Suma"</span>)
+ventana.geometry(<span class="string">"450x350"</span>)
+ventana.config(bg=<span class="string">"#f0f9ff"</span>)
+
+<span class="comment"># Función para sumar</span>
+<span class="keyword">def</span> <span class="function">sumar</span>():
+    <span class="keyword">try</span>:
+        <span class="comment"># Leer valores</span>
+        num1 = <span class="number">float</span>(entrada1.get())
+        num2 = <span class="number">float</span>(entrada2.get())
+        
+        <span class="comment"># Calcular</span>
+        resultado_calc = num1 + num2
+        
+        <span class="comment"># Mostrar resultado</span>
+        resultado.config(text=f<span class="string">"Resultado: {resultado_calc}"</span>, fg=<span class="string">"#10b981"</span>)
+    
+    <span class="keyword">except</span> ValueError:
+        resultado.config(text=<span class="string">"❌ Error: Ingresa números válidos"</span>, fg=<span class="string">"#ef4444"</span>)
+
+<span class="comment"># Interfaz</span>
+tk.Label(ventana, text=<span class="string">"Calculadora: Suma"</span>, font=(<span class="string">"Arial"</span>, 20, <span class="string">"bold"</span>), fg=<span class="string">"#0284c7"</span>, bg=<span class="string">"#f0f9ff"</span>).pack(pady=15)
+
+tk.Label(ventana, text=<span class="string">"Número 1:"</span>, font=(<span class="string">"Arial"</span>, 12), bg=<span class="string">"#f0f9ff"</span>).pack()
+entrada1 = tk.Entry(ventana, width=30, font=(<span class="string">"Arial"</span>, 12))
+entrada1.pack(pady=5)
+
+tk.Label(ventana, text=<span class="string">"Número 2:"</span>, font=(<span class="string">"Arial"</span>, 12), bg=<span class="string">"#f0f9ff"</span>).pack()
+entrada2 = tk.Entry(ventana, width=30, font=(<span class="string">"Arial"</span>, 12))
+entrada2.pack(pady=5)
+
+boton = tk.Button(ventana, text=<span class="string">"Sumar"</span>, command=sumar, bg=<span class="string">"#0284c7"</span>, fg=<span class="string">"white"</span>, font=(<span class="string">"Arial"</span>, 12, <span class="string">"bold"</span>), padx=40, pady=10)
+boton.pack(pady=20)
+
+resultado = tk.Label(ventana, text=<span class="string">"Resultado: -"</span>, font=(<span class="string">"Arial"</span>, 14, <span class="string">"bold"</span>), bg=<span class="string">"#f0f9ff"</span>)
+resultado.pack(pady=20)
+
+ventana.mainloop()
+        </div>
+    </section>
+
+    <!-- SLIDE 22: Ejercicio 4 - Calculadora (Parte 2 - Explicación) -->
+    <section class="slide p-16 col" style="background-color: #ffffff;">
+        <h2 style="color: #0284c7; margin-bottom: 0.8rem;">Calculadora: Explicación Detallada</h2>
+        
+        <div style="display: grid; grid-template-columns: 1.5fr 1.5fr; gap: 1rem; font-size: 0.85rem;">
+            <div class="card">
+                <h4 style="color: #0284c7; margin-bottom: 0.5rem;">1️⃣ float() y get()</h4>
+                <div class="code-block" style="font-size: 0.6rem;">
+<span class="comment"># Entry devuelve string</span>
+text = entrada.get()  <span class="comment">"15"</span>
+
+<span class="comment"># Convertir a número</span>
+numero = <span class="number">float</span>(text)  <span class="comment">15.0</span>
+                </div>
+            </div>
+            <div class="card">
+                <h4 style="color: #0284c7; margin-bottom: 0.5rem;">2️⃣ try/except</h4>
+                <div class="code-block" style="font-size: 0.6rem;">
+<span class="keyword">try</span>:
+    <span class="comment"># Si el usuario escribe</span>
+    <span class="comment"># "abc": float() falla</span>
+    num = <span class="number">float</span>(entrada.get())
+<span class="keyword">except</span> ValueError:
+    <span class="comment"># Captura el error</span>
+    print(<span class="string">"Error!"</span>)
+                </div>
+            </div>
+            <div class="card">
+                <h4 style="color: #0284c7; margin-bottom: 0.5rem;">3️⃣ .config()</h4>
+                <div class="code-block" style="font-size: 0.6rem;">
+<span class="comment"># Actualizar etiqueta</span>
+resultado.config(
+    text=f<span class="string">"Resultado: {num1+num2}"</span>,
+    fg=<span class="string">"#10b981"</span>  <span class="comment">verde</span>
+)
+                </div>
+            </div>
+            <div class="card">
+                <h4 style="color: #0284c7; margin-bottom: 0.5rem;">4️⃣ f-strings</h4>
+                <div class="code-block" style="font-size: 0.6rem;">
+<span class="comment"># Insertar variables</span>
+nombre = <span class="string">"Juan"</span>
+edad = 25
+print(f<span class="string">"Hola {nombre}, "</span>
+      f<span class="string">"tienes {edad}"</span>)
+                </div>
+            </div>
+        </div>
+
+        <div class="important-box" style="margin-top: 0.8rem;">
+            <strong>⚠️ Importante:</strong> Usa <code>try/except</code> siempre que conviertas entrada del usuario a número
+        </div>
+    </section>
+
+    <!-- SLIDE 23: Desafío Extendido - Calculadora Completa -->
+    <section class="slide p-16 col" style="background-color: #ffffff;">
+        <h2 style="color: #0284c7; margin-bottom: 0.8rem;">Desafío: Calculadora con 4 Operaciones</h2>
+        
+        <p style="color: #374151; margin-bottom: 0.8rem; font-size: 0.9rem;"><strong>Nivel Avanzado:</strong> Añade botones para restar, multiplicar, dividir</p>
+
+        <div class="code-block" style="margin-bottom: 0.8rem; font-size: 0.65rem;">
+<span class="keyword">import</span> tkinter <span class="keyword">as</span> tk
+
+ventana = tk.Tk()
+ventana.title(<span class="string">"Calculadora Completa"</span>)
+ventana.geometry(<span class="string">"500x400"</span>)
+ventana.config(bg=<span class="string">"#f0f9ff"</span>)
+
+<span class="keyword">def</span> <span class="function">calcular</span>(operacion):
+    <span class="keyword">try</span>:
+        num1 = <span class="number">float</span>(entrada1.get())
+        num2 = <span class="number">float</span>(entrada2.get())
+        
+        <span class="keyword">if</span> operacion == <span class="string">"+"</span>:
+            res = num1 + num2
+        <span class="keyword">elif</span> operacion == <span class="string">"-"</span>:
+            res = num1 - num2
+        <span class="keyword">elif</span> operacion == <span class="string">"*"</span>:
+            res = num1 * num2
+        <span class="keyword">elif</span> operacion == <span class="string">"/"</span>:
+            res = num1 / num2 <span class="keyword">if</span> num2 != 0 <span class="keyword">else</span> <span class="string">"Error: División por 0"</span>
+        
+        resultado.config(text=f<span class="string">"Resultado: {res}"</span>, fg=<span class="string">"#10b981"</span>)
+    <span class="keyword">except</span> ValueError:
+        resultado.config(text=<span class="string">"❌ Error: números válidos"</span>, fg=<span class="string">"#ef4444"</span>)
+
+<span class="comment"># Widgets</span>
+tk.Label(ventana, text=<span class="string">"Número 1:"</span>, bg=<span class="string">"#f0f9ff"</span>, font=(<span class="string">"Arial"</span>, 12)).pack()
+entrada1 = tk.Entry(ventana, width=30)
+entrada1.pack(pady=5)
+
+tk.Label(ventana, text=<span class="string">"Número 2:"</span>, bg=<span class="string">"#f0f9ff"</span>, font=(<span class="string">"Arial"</span>, 12)).pack()
+entrada2 = tk.Entry(ventana, width=30)
+entrada2.pack(pady=5)
+
+<span class="comment"># Botones de operaciones</span>
+frame = tk.Frame(ventana, bg=<span class="string">"#f0f9ff"</span>)
+frame.pack(pady=15)
+
+tk.Button(frame, text=<span class="string">"+"</span>, command=<span class="keyword">lambda</span>: calcular(<span class="string">"+"</span>), bg=<span class="string">"#0284c7"</span>, fg=<span class="string">"white"</span>, width=5).pack(side=<span class="string">"left"</span>, padx=5)
+tk.Button(frame, text=<span class="string">"-"</span>, command=<span class="keyword">lambda</span>: calcular(<span class="string">"-"</span>), bg=<span class="string">"#0284c7"</span>, fg=<span class="string">"white"</span>, width=5).pack(side=<span class="string">"left"</span>, padx=5)
+tk.Button(frame, text=<span class="string">"*"</span>, command=<span class="keyword">lambda</span>: calcular(<span class="string">"*"</span>), bg=<span class="string">"#0284c7"</span>, fg=<span class="string">"white"</span>, width=5).pack(side=<span class="string">"left"</span>, padx=5)
+tk.Button(frame, text=<span class="string">"/"</span>, command=<span class="keyword">lambda</span>: calcular(<span class="string">"/"</span>), bg=<span class="string">"#0284c7"</span>, fg=<span class="string">"white"</span>, width=5).pack(side=<span class="string">"left"</span>, padx=5)
+
+resultado = tk.Label(ventana, text=<span class="string">"Resultado: -"</span>, font=(<span class="string">"Arial"</span>, 14, <span class="string">"bold"</span>), bg=<span class="string">"#f0f9ff"</span>)
+resultado.pack(pady=20)
+
+ventana.mainloop()
+        </div>
+
+        <div class="badge badge-warning" style="margin-top: 0.8rem;">Concepto nuevo: lambda</div>
+    </section>
+
+    <!-- SLIDE 24: Lambda - Funciones Anónimas -->
+    <section class="slide p-16 col" style="background-color: #ffffff;">
+        <h2 style="color: #0284c7; margin-bottom: 0.8rem;">Lambda: Funciones Anónimas (Avanzado)</h2>
+        
+        <div class="grid-2">
+            <div>
+                <h4 style="color: #0ea5e9; margin-bottom: 0.6rem;">¿Qué es Lambda?</h4>
+                <p style="color: #374151; font-size: 0.85rem;">Función pequeña <strong>sin nombre</strong> de una sola línea</p>
+                <p style="color: #374151; font-size: 0.85rem; margin-top: 0.6rem;"><strong>Problema:</strong></p>
+                <p style="color: #374151; font-size: 0.8rem;">Los botones NO permiten pasar parámetros directamente:</p>
+                <div class="code-block" style="font-size: 0.6rem;">
+<span class="comment"># ❌ ESTO NO FUNCIONA</span>
+tk.Button(
+    ventana,
+    command=calcular(<span class="string">"+"</span>)
+)
+                </div>
+            </div>
+            <div class="card-dark">
+                <h4 style="color: #e0f2fe; margin-bottom: 0.6rem;">✅ Solución: Lambda</h4>
+                <div class="code-block" style="font-size: 0.6rem;">
+<span class="comment"># Lambda resuelve el problema</span>
+tk.Button(
+    ventana,
+    command=<span class="keyword">lambda</span>: calcular(<span class="string">"+"</span>)
+)
+
+<span class="comment"># Es equivalente a:</span>
+<span class="keyword">def</span> <span class="function">temp</span>():
+    calcular(<span class="string">"+"</span>)
+tk.Button(ventana, command=temp)
+                </div>
+            </div>
+        </div>
+
+        <div class="important-box" style="margin-top: 0.8rem;">
+            <strong>Sintaxis Lambda:</strong> <code>lambda parámetros: expresión</code>
+        </div>
+    </section>
+
+    <!-- SLIDE 25: Resumen y Próximos Pasos -->
+    <section class="slide p-16 col center" style="background: linear-gradient(135deg, #0284c7 0%, #0ea5e9 100%); color: #ffffff;">
+        <h2 style="margin-bottom: 1.5rem;">✅ Resumen Sesión 1</h2>
+        
+        <div style="text-align: left; margin: 0 auto; font-size: 0.95rem;">
+            <ul style="margin-bottom: 1.5rem; line-height: 2; color: #ffffff;">
+                <li>✓ Estructura básica Tkinter (Tk, mainloop, geometry)</li>
+                <li>✓ 3 widgets principales: Label, Button, Entry</li>
+                <li>✓ Eventos y Callbacks (command=función)</li>
+                <li>✓ pack() vs grid() para layouts</li>
+                <li>✓ Funciones Python (parámetros, return)</li>
+                <li>✓ Manejo de errores (try/except)</li>
+                <li>✓ Tu primera calculadora funcional 🎉</li>
+            </ul>
+
+            <p style="font-size: 1.1rem; font-weight: 600; margin-bottom: 1rem;">🎯 Desafíos Opcionales:</p>
+            <ul style="color: #ffffff; font-size: 0.9rem;">
+                <li>➕ Crea una calculadora de 4 operaciones</li>
+                <li>🎨 Añade más colores y mejora el diseño</li>
+                <li>📱 Crea una calculadora con grid() (botones numéricos 0-9)</li>
+                <li>💾 Guarda el historial de cálculos</li>
+            </ul>
+        </div>
+    </section>
+
+</body>
+</html>
